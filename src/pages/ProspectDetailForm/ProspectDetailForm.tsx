@@ -489,7 +489,7 @@ const ProspectDetailForm: React.FC = () => {
       } else {
         await createProspectDetail(fd);
         // alert("Successfully Submitted!");
-        showMessage("Successfully Updated!");
+        showMessage("Successfully Submitted!");
       }
 
       navigate("/summary");
