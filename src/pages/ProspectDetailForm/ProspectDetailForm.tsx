@@ -13,7 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
  
 type CallSection = { checked: boolean; notes: string };
  
-type FormValues = {
+export type FormValues = {
   month: string;
   quarter: string;
   prospect: string;

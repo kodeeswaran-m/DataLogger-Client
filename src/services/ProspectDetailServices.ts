@@ -7,7 +7,8 @@ const api = axios.create({
 });
 const API_URL="https://datalogger-server.onrender.com/api/prospectDetail"
 // const API_URL="http://localhost:5000/api/prospectDetail"
- 
+ export type ProspectPayload = FormData; 
+
 export const fetchProspects = async (
   page = 1,
   limit = 20,
