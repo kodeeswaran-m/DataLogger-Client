@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import "./sidebar.css";
+import "./Sidebar.css";
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import FitbitIcon from "@mui/icons-material/Fitbit";
 import PollIcon from "@mui/icons-material/Poll";
