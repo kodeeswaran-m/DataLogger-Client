@@ -1,10 +1,12 @@
 import axios from "axios";
  
 const api = axios.create({
-  baseURL: "http://localhost:5000/api/prospectDetail",
+  // baseURL: "http://localhost:5000/api/prospectDetail",
+  baseURL: "https://datalogger-server.onrender.com/api/prospectDetail",
   // you can add timeout if needed
 });
-const API_URL="http://localhost:5000/api/prospectDetail"
+const API_URL="https://datalogger-server.onrender.com/api/prospectDetail"
+// const API_URL="http://localhost:5000/api/prospectDetail"
  
 export const fetchProspects = async (
   page = 1,
