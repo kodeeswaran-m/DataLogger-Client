@@ -40,7 +40,26 @@ export default function DynamicRechartsBar({ url }: { url: string }) {
   const [selectedSeries, setSelectedSeries] = useState<string[]>([]);
   const [chartType, setChartType] = useState<"stacked" | "bar">("stacked");
 
-  const colors = ["#8884d8", "#82ca9d", "#ffc658", "#d0ed57", "#a4de6c"];
+  // const colors = ["#8884d8", "#82ca9d", "#ffc658", "#d0ed57", "#a4de6c"];
+  const colors = [
+    "#8884d8",
+    "#82ca9d",
+    "#ffc658",
+    "#d0ed57",
+    "#a4de6c",
+    "#8dd1e1",
+    "#83a6ed",
+    "#faa75b",
+    "#d184e0",
+    "#9ad0f5",
+  ];
+  const colorMap: Record<string, string> = {};
+
+  selectedSeries.forEach((s, i) => {
+    if (!colorMap[s]) {
+      colorMap[s] = colors[i % colors.length];
+    }
+  });
 
   useEffect(() => {
     async function loadData() {
@@ -227,7 +246,6 @@ export default function DynamicRechartsBar({ url }: { url: string }) {
 
             {/* ↓↓↓ SMALLER TOOLTIP FONT ↓↓↓ */}
             <Tooltip
-           
               contentStyle={{
                 fontSize: "10px", // tooltip box text
                 padding: "4px 6px",
@@ -254,7 +272,8 @@ export default function DynamicRechartsBar({ url }: { url: string }) {
                 key={series}
                 dataKey={series}
                 stackId={chartType === "stacked" ? "a" : undefined}
-                fill={colors[index % colors.length]}
+                // fill={colors[index % colors.length]}
+                fill={colorMap[series]}
                 maxBarSize={35}
               />
             ))}
