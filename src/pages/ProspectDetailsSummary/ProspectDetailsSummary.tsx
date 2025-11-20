@@ -12,6 +12,7 @@ import ProspectDetailsTable from "../../components/ProspectTable/ProspectDetails
 import SummaryToolbar from "../../components/SummaryToolbar/SummaryToolbar";
 import { CircularProgress } from "@mui/material";
 import ConfirmDialog from "../../components/Common/ConfirmDialog";
+import { useSnackbar } from "../../context/SnackbarContext";
 
 const LS_KEY = "prospect_params";
 export interface FilterState {
@@ -56,7 +57,7 @@ const ProspectDetailsSummary = () => {
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
     saved.selectedColumns || DEFAULT_COLUMNS
   );
-
+  const { showMessage } = useSnackbar();
   const [showPicker, setShowPicker] = useState(false);
   const [showSearch, setShowSearch] = useState(saved.showSearch || false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -176,7 +177,8 @@ const ProspectDetailsSummary = () => {
       await deleteProspect(selectedRow._id);
 
       setItems((prev) => prev.filter((item) => item._id !== selectedRow._id));
-      setTotalRecords((prev)=>prev-1)
+      setTotalRecords((prev)=>prev-1);
+      showMessage("Deleted successfully.");
     } catch (err) {
       console.error(err);
       alert("Failed to delete.");
