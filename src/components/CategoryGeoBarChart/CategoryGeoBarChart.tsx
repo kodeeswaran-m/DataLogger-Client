@@ -267,7 +267,7 @@ export default function DynamicRechartsBar({ url }: { url: string }) {
               }}
             />
 
-            {selectedSeries.map((series) => (
+            {selectedSeries.map((series,_index) => (
               <Bar
                 key={series}
                 dataKey={series}
