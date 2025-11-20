@@ -14,6 +14,14 @@ import { CircularProgress } from "@mui/material";
 import ConfirmDialog from "../../components/Common/ConfirmDialog";
 
 const LS_KEY = "prospect_params";
+export interface FilterState {
+  geo: string;
+  month: string;
+  quarter: string;
+  lob: string;
+  rag: string;
+}
+
 
 const ProspectDetailsSummary = () => {
   const saved = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
@@ -29,7 +37,7 @@ const ProspectDetailsSummary = () => {
   };
 
   const [search, setSearch] = useState(urlSearch || saved.search || "");
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<FilterState>({
     geo: urlFilters.geo || saved.filters?.geo || "",
     month: urlFilters.month || saved.filters?.month || "",
     quarter: urlFilters.quarter || saved.filters?.quarter || "",
@@ -45,7 +53,7 @@ const ProspectDetailsSummary = () => {
     "lob",
     "actions",
   ];
-  const [selectedColumns, setSelectedColumns] = useState(
+  const [selectedColumns, setSelectedColumns] = useState<string[]>(
     saved.selectedColumns || DEFAULT_COLUMNS
   );
 

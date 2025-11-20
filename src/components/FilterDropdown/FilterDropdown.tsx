@@ -8,15 +8,10 @@ import {
 } from "lucide-react";
 import "./FilterDropdown.css";
 import { Tooltip } from "@mui/material";
+import type { FilterState } from "../../pages/ProspectDetailsSummary/ProspectDetailsSummary";
 interface Props {
-  filters: {
-    geo: string;
-    month: string;
-    quarter: string;
-    lob: string;
-    rag: string;
-  };
-  setFilters: (filters: any) => void;
+  filters: FilterState;
+  setFilters: (filters: FilterState) => void;
 }
 
 // const GEOFILTER = ["APAC", "US", "Oceania", "Europe", "India"];
@@ -69,7 +64,11 @@ const RAGFILTER = [
 
 const FilterDropdown = ({ filters, setFilters }: Props) => {
   const [showFilter, setShowFilter] = useState(false);
-  const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
+  // const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
+  const [activeSubMenu, setActiveSubMenu] = useState<keyof FilterState | null>(
+    null
+  );
+
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Active badge count
@@ -90,7 +89,7 @@ const FilterDropdown = ({ filters, setFilters }: Props) => {
     return () => document.removeEventListener("mousedown", close);
   }, []);
 
-  const updateFilter = (key: string, value: string) => {
+  const updateFilter = (key: keyof FilterState, value: string) => {
     setFilters({ ...filters, [key]: value });
     setShowFilter(false);
     setActiveSubMenu(null);
@@ -140,36 +139,36 @@ const FilterDropdown = ({ filters, setFilters }: Props) => {
           </div> */}
 
           <div className="filter-main">
-  {["geo", "month", "quarter", "lob", "rag"].map((key) => {
-    const isActive = filters[key] !== ""; // filter applied?
+            {(["geo", "month", "quarter", "lob", "rag"] as (keyof FilterState)[]).map((key) => {
+              console.log("key", key);
+              const isActive = filters[key] !== ""; // filter applied?
 
-    return (
-      <div
-        key={key}
-        className={`filter-item ${
-          activeSubMenu === key ? "active-submenu" : ""
-        }`}
-        onClick={() =>
-          setActiveSubMenu(activeSubMenu === key ? null : key)
-        }
-      >
-        <div className="filter-label">
-          {key.charAt(0).toUpperCase() + key.slice(1)}
+              return (
+                <div
+                  key={key}
+                  className={`filter-item ${
+                    activeSubMenu === key ? "active-submenu" : ""
+                  }`}
+                  onClick={() =>
+                    setActiveSubMenu(activeSubMenu === key ? null : key)
+                  }
+                >
+                  <div className="filter-label">
+                    {key.charAt(0).toUpperCase() + key.slice(1)}
 
-          {/* Black Dot (shown only when filter applied) */}
-          {isActive && <span className="active-dot" />}
-        </div>
+                    {/* Black Dot (shown only when filter applied) */}
+                    {isActive && <span className="active-dot" />}
+                  </div>
 
-        {activeSubMenu === key ? (
-          <ChevronLeft size={14} />
-        ) : (
-          <ChevronRight size={14} />
-        )}
-      </div>
-    );
-  })}
-</div>
-
+                  {activeSubMenu === key ? (
+                    <ChevronLeft size={14} />
+                  ) : (
+                    <ChevronRight size={14} />
+                  )}
+                </div>
+              );
+            })}
+          </div>
 
           {/* RIGHT SUB MENU */}
           {activeSubMenu && (

@@ -5,11 +5,9 @@ import {
   DialogTitle,
   Button,
   Typography,
-  Box,
   useTheme,
 } from "@mui/material";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 type ConfirmDialogProps = {
   open: boolean;

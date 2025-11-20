@@ -1,4 +1,4 @@
-import { Search, ArrowUpDown, Columns3Cog, Plus } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import FilterDropdown from "../FilterDropdown/FilterDropdown";
 import "./SummaryToolbar.css";
 import ColumnPicker from "../ColumnPicker/ColumnPicker";
