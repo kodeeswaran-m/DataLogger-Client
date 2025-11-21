@@ -23,7 +23,7 @@ export interface FilterState {
   rag: string;
 }
 const ProspectDetailsSummary = () => {
-  const saved = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
+  const saved = JSON.parse(sessionStorage.getItem(LS_KEY) || "{}");
   const [searchParams, setSearchParams] = useSearchParams();
 
   const urlSearch = searchParams.get("search") || "";
@@ -88,7 +88,7 @@ const ProspectDetailsSummary = () => {
   }, [search, filters]);
 
   useEffect(() => {
-    localStorage.setItem(
+    sessionStorage.setItem(
       LS_KEY,
       JSON.stringify({
         search,

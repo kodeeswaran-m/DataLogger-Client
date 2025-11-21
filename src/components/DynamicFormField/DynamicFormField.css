@@ -1,12 +1,11 @@
-/* ========== Dynamic Form Field Styling ========== */
 
-/* EMPTY CELL */
 .empty-cell {
   visibility: hidden;
 }
 
 /* FORM GROUP */
 .form-group {
+  position:relative;
   display: flex;
   flex-direction: column;
 }
@@ -47,4 +46,57 @@
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 14px;
+}
+
+
+/* 🔹 Main select box (black + white theme) */
+.custom-select-box {
+  padding: 8px 12px;
+  border: 1px solid #c2c2c2;
+  border-radius: 6px;
+  font-size: 15px;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.custom-select-box:hover {
+  border-color: #444;
+}
+
+.custom-select-box.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* 🔹 LIST DROPDOWN — overlay does NOT shift layout */
+.custom-select-list.overlay {
+  position: absolute; /* overlay */
+  margin-top: 76px;
+  width: 100%;
+  z-index: 1000;
+  background: #fff;
+  border: 1px solid #c2c2c2;
+  border-radius: 6px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+/* 🔹 DROPDOWN ITEMS */
+.custom-select-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.custom-select-item:hover {
+  background: #272727;
+  color: #fff;
+}
+
+.arrow {
+  pointer-events: none;
 }

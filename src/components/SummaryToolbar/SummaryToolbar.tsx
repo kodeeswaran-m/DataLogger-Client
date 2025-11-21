@@ -45,7 +45,7 @@ export default function SummaryToolbar({
       <div className="toolbar-item-left">
         <Tooltip title="search">
           <button
-            className="icon-btn std-control"
+            className="icon-btn "
             onClick={() => setShowSearch(!showSearch)}
           >
             <Search size={18} />
@@ -55,7 +55,7 @@ export default function SummaryToolbar({
         {showSearch && (
           <input
             type="text"
-            className="search-input std-control"
+            className="search-input "
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -75,12 +75,12 @@ export default function SummaryToolbar({
         <FilterDropdown filters={filters} setFilters={setFilters} />
 
         {/* <Tooltip title="sort">
-          <button className="icon-btn std-control">
+          <button className="icon-btn ">
             <ArrowUpDown size={18} />
           </button>
         </Tooltip> */}
         <Tooltip title="total records">
-          <p className="icon-btn count-txt">Total : {total}</p>
+          <span className="total-txt">Total : {total}</span>
         </Tooltip>
         <Tooltip title="add new">
           <button className="add-btn" onClick={onAddNew}>

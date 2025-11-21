@@ -2,6 +2,8 @@
 import React from "react";
 import type { DynamicFieldProps } from "./DynamicFormField.types";
 import "./DynamicFormField.css";
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const DynamicFormField: React.FC<DynamicFieldProps> = (props) => {
   switch (props.type) {
@@ -34,23 +36,77 @@ const DynamicFormField: React.FC<DynamicFieldProps> = (props) => {
       );
     }
 
-    case "select": {
-      return (
-        <div className={`form-group ${props.className || ""}`}>
-          {props.label && <label>{props.label}</label>}
-          <select
-            value={props.value ?? ""}
-            onChange={(e) => props.onChange?.(e.target.value)}
-            disabled={props.disabled}
-          >
-            <option value="">-- Select --</option>
+    // case "select": {
+    //   return (
+    //     <div className={`form-group ${props.className || ""}`}>
+    //       {props.label && <label>{props.label}</label>}
+    //       <select
+    //         value={props.value ?? ""}
+    //         onChange={(e) => props.onChange?.(e.target.value)}
+    //         disabled={props.disabled}
+    //       >
+    //         <option value="">-- Select --</option>
 
-            {props.options?.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+    //         {props.options?.map((opt) => (
+    //           <option key={opt.value} value={opt.value}>
+    //             {opt.label}
+    //           </option>
+    //         ))}
+    //       </select>
+    //     </div>
+    //   );
+    // }
+    case "select": {
+      const [open, setOpen] = React.useState(false);
+      const containerRef = React.useRef<HTMLDivElement>(null);
+
+      // Close when clicking outside
+      React.useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+          if (
+            containerRef.current &&
+            !containerRef.current.contains(e.target as Node)
+          ) {
+            setOpen(false);
+          }
+        };
+        document.addEventListener("click", handleClick);
+        return () => document.removeEventListener("click", handleClick);
+      }, []);
+
+      return (
+        <div className="form-group" ref={containerRef}>
+          {props.label && <label>{props.label}</label>}
+
+          <div
+            className={`custom-select-box ${props.disabled ? "disabled" : ""}`}
+            onClick={() => !props.disabled && setOpen((prev) => !prev)}
+          >
+            <span className="selected-value">
+              {props.options?.find((o) => o.value === props.value)?.label ||
+                "-- Select --"}
+            </span>
+            <span className="arrow">
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </span>
+          </div>
+
+          {open && !props.disabled && (
+            <ul className="custom-select-list overlay">
+              {props.options?.map((opt) => (
+                <li
+                  key={opt.value}
+                  className="custom-select-item"
+                  onClick={() => {
+                    setOpen(false);
+                    props.onChange?.(opt.value);
+                  }}
+                >
+                  {opt.label}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       );
     }
