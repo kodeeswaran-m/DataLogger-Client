@@ -6,6 +6,25 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const DynamicFormField: React.FC<DynamicFieldProps> = (props) => {
+
+
+   const [open, setOpen] = React.useState(false);
+      const containerRef = React.useRef<HTMLDivElement>(null);
+
+      // Close when clicking outside
+      React.useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+          if (
+            containerRef.current &&
+            !containerRef.current.contains(e.target as Node)
+          ) {
+            setOpen(false);
+          }
+        };
+        document.addEventListener("click", handleClick);
+        return () => document.removeEventListener("click", handleClick);
+      }, []);
+
   switch (props.type) {
     case "text": {
       return (
@@ -57,23 +76,6 @@ const DynamicFormField: React.FC<DynamicFieldProps> = (props) => {
     //   );
     // }
     case "select": {
-      const [open, setOpen] = React.useState(false);
-      const containerRef = React.useRef<HTMLDivElement>(null);
-
-      // Close when clicking outside
-      React.useEffect(() => {
-        const handleClick = (e: MouseEvent) => {
-          if (
-            containerRef.current &&
-            !containerRef.current.contains(e.target as Node)
-          ) {
-            setOpen(false);
-          }
-        };
-        document.addEventListener("click", handleClick);
-        return () => document.removeEventListener("click", handleClick);
-      }, []);
-
       return (
         <div className="form-group" ref={containerRef}>
           {props.label && <label>{props.label}</label>}
@@ -110,6 +112,7 @@ const DynamicFormField: React.FC<DynamicFieldProps> = (props) => {
         </div>
       );
     }
+
 
     case "combobox": {
       return (
