@@ -15,7 +15,8 @@ export const fetchProspects = async (
   search = "",
   filters: any = {}
 ) => {
-  console.log("filters",filters);
+  console.log("filters", page, limit, search, filters);
+  
   const query = new URLSearchParams({
     page: String(page),
     limit: String(limit),
@@ -26,12 +27,12 @@ export const fetchProspects = async (
     lob: filters.lob || "",
     rag: filters.rag || "",
   }).toString();
- 
+  console.log("query", query);
   const res = await axios.get(`${API_URL}?${query}`);
-  console.log("response data",res.data);
+  console.log("response data", res.data.data);
   return res.data;
 };
- 
+
 export const deleteProspect = async (id: string) => {
   const res = await axios.delete(`${API_URL}/${id}`);
   return res.data;

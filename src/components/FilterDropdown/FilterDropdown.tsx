@@ -64,11 +64,9 @@ const RAGFILTER = [
 
 const FilterDropdown = ({ filters, setFilters }: Props) => {
   const [showFilter, setShowFilter] = useState(false);
-  // const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
   const [activeSubMenu, setActiveSubMenu] = useState<keyof FilterState | null>(
     null
   );
-
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Active badge count
@@ -89,7 +87,8 @@ const FilterDropdown = ({ filters, setFilters }: Props) => {
     return () => document.removeEventListener("mousedown", close);
   }, []);
 
-  const updateFilter = (key: keyof FilterState, value: string) => {
+  const updateFilter = (key: string, value: string) => {
+    // console.log("filters", key, value);
     setFilters({ ...filters, [key]: value });
     setShowFilter(false);
     setActiveSubMenu(null);
@@ -139,10 +138,11 @@ const FilterDropdown = ({ filters, setFilters }: Props) => {
           </div> */}
 
           <div className="filter-main">
-            {(["geo", "month", "quarter", "lob", "rag"] as (keyof FilterState)[]).map((key) => {
+            {(
+              ["geo", "month", "quarter", "lob", "rag"] as (keyof FilterState)[]
+            ).map((key) => {
               console.log("key", key);
               const isActive = filters[key] !== ""; // filter applied?
-
               return (
                 <div
                   key={key}
