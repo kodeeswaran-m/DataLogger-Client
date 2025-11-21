@@ -15,6 +15,7 @@ export const fetchProspects = async (
   search = "",
   filters: any = {}
 ) => {
+  console.log("filters",filters);
   const query = new URLSearchParams({
     page: String(page),
     limit: String(limit),
