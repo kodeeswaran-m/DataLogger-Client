@@ -23,7 +23,6 @@ export interface FilterState {
   rag: string;
 }
 
-
 const ProspectDetailsSummary = () => {
   const saved = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -45,7 +44,7 @@ const ProspectDetailsSummary = () => {
     lob: urlFilters.lob || saved.filters?.lob || "",
     rag: urlFilters.rag || saved.filters?.rag || "",
   });
-  const [totalRecords, setTotalRecords]=useState(0);
+  const [totalRecords, setTotalRecords] = useState(0);
   const DEFAULT_COLUMNS = [
     "month",
     "quarter",
@@ -83,6 +82,7 @@ const ProspectDetailsSummary = () => {
       (key) =>
         (params[key] === "" || params[key] === undefined) && delete params[key]
     );
+    delete params.page;
 
     setSearchParams(params);
   }, [search, filters]);
@@ -104,8 +104,11 @@ const ProspectDetailsSummary = () => {
     setPage(1);
     setHasMore(true);
   }, [search, filters]);
+  useEffect(() => {
+    loadData();
+  }, [page]);
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     if (loading || !hasMore) return;
 
     setLoading(true);
@@ -113,7 +116,7 @@ const ProspectDetailsSummary = () => {
       const res = await fetchProspects(page, limit, search, filters);
 
       setItems((prev) => [...prev, ...res.data]);
-      setTotalRecords(res.meta.total)
+      setTotalRecords(res.meta.total);
       if (res.data.length < limit) {
         setHasMore(false);
       } else {
@@ -125,7 +128,7 @@ const ProspectDetailsSummary = () => {
     }
 
     setLoading(false);
-  };
+  }, [page, limit, search, filters, hasMore, loading]);
 
   const handleObserver = useCallback(
     (entries: any) => {
@@ -177,7 +180,7 @@ const ProspectDetailsSummary = () => {
       await deleteProspect(selectedRow._id);
 
       setItems((prev) => prev.filter((item) => item._id !== selectedRow._id));
-      setTotalRecords((prev)=>prev-1);
+      setTotalRecords((prev) => prev - 1);
       showMessage("Deleted successfully.");
     } catch (err) {
       console.error(err);
