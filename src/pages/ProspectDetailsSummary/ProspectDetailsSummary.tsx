@@ -22,7 +22,6 @@ export interface FilterState {
   lob: string;
   rag: string;
 }
-
 const ProspectDetailsSummary = () => {
   const saved = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,6 +34,7 @@ const ProspectDetailsSummary = () => {
     lob: searchParams.get("lob") || "",
     rag: searchParams.get("rag") || "",
   };
+  const { showMessage } = useSnackbar();
 
   const [search, setSearch] = useState(urlSearch || saved.search || "");
   const [filters, setFilters] = useState<FilterState>({
@@ -56,7 +56,7 @@ const ProspectDetailsSummary = () => {
   const [selectedColumns, setSelectedColumns] = useState<string[]>(
     saved.selectedColumns || DEFAULT_COLUMNS
   );
-  const { showMessage } = useSnackbar();
+
   const [showPicker, setShowPicker] = useState(false);
   const [showSearch, setShowSearch] = useState(saved.showSearch || false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -107,7 +107,6 @@ const ProspectDetailsSummary = () => {
   useEffect(() => {
     loadData();
   }, [page]);
-
   const loadData = useCallback(async () => {
     if (loading || !hasMore) return;
 
