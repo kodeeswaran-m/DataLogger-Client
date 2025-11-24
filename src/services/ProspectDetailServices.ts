@@ -1,12 +1,12 @@
 import axios from "axios";
  
 const api = axios.create({
-  // baseURL: "http://localhost:5000/api/prospectDetail",
-  baseURL: "https://datalogger-server.onrender.com/api/prospectDetail",
+  baseURL: "http://localhost:5000/api/prospectDetail",
+  // baseURL: "https://datalogger-server.onrender.com/api/prospectDetail",
   // you can add timeout if needed
 });
-const API_URL="https://datalogger-server.onrender.com/api/prospectDetail"
-// const API_URL="http://localhost:5000/api/prospectDetail"
+// const API_URL="https://datalogger-server.onrender.com/api/prospectDetail"
+const API_URL="http://localhost:5000/api/prospectDetail"
  export type ProspectPayload = FormData; 
 
 export const fetchProspects = async (
@@ -37,8 +37,32 @@ export const deleteProspect = async (id: string) => {
   const res = await axios.delete(`${API_URL}/${id}`);
   return res.data;
 };
- 
- 
+
+export const downloadProspectsExcelBlob = async (filters: any = {}) => {
+  const query = new URLSearchParams({
+    geo: filters.geo || "",
+    month: filters.month || "",
+    quarter: filters.quarter || "",
+    rag: filters.rag || "",
+  }).toString();
+
+  const res = await axios.get(`${API_URL}/download?${query}`, {
+    responseType: "blob",
+  });
+
+  const blob = new Blob([res.data], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+
+  const link = document.createElement("a");
+  link.href = window.URL.createObjectURL(blob);
+  link.download = "prospect_data.xlsx";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+};
+
+
  
 // POST with multipart/form-data
 export const createProspectDetail = async (data: ProspectPayload) => {

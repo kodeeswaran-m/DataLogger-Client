@@ -44,11 +44,13 @@ const ProspectCharts = () => {
 
       {/* Tab Panels */}
       <TabPanel value={tab} index={0}>
-        <DynamicBarChart url="https://datalogger-server.onrender.com/api/prospectDetail/chart-data" />
+        <DynamicBarChart url="http://localhost:5000/api/prospectDetail/chart-data" />
+        {/* <DynamicBarChart url="https://datalogger-server.onrender.com/api/prospectDetail/chart-data" /> */}
       </TabPanel>
 
       <TabPanel value={tab} index={1}>
-        <DynamicBarChart url="https://datalogger-server.onrender.com/api/prospectDetail/chart-data-month" />
+        <DynamicBarChart url="http://localhost:5000/api/prospectDetail/chart-data-month" />
+        {/* <DynamicBarChart url="https://datalogger-server.onrender.com/api/prospectDetail/chart-data-month" /> */}
       </TabPanel>
     </Box>
   );

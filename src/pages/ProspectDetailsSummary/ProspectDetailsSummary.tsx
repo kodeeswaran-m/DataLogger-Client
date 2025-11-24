@@ -6,6 +6,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { columns } from "../../components/ProspectTable/ProspectDetailsTable.config";
 import {
   deleteProspect,
+  downloadProspectsExcelBlob,
   fetchProspects,
 } from "../../services/ProspectDetailServices";
 import ProspectDetailsTable from "../../components/ProspectTable/ProspectDetailsTable";
@@ -67,6 +68,7 @@ const ProspectDetailsSummary = () => {
   const [limit] = useState(30);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [downloadLoading, setDownloadLoading] = useState(false);
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
@@ -206,6 +208,20 @@ const ProspectDetailsSummary = () => {
     );
   };
 
+  const handleDownload = async () => {
+    setLoading(true);
+    try {
+      await downloadProspectsExcelBlob({
+        geo: filters.geo,
+        month: filters.month,
+        quarter: filters.quarter,
+        rag: filters.rag,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="summary-container">
       <div className="summary-card">
@@ -227,6 +243,8 @@ const ProspectDetailsSummary = () => {
           columns={columns}
           onAddNew={() => navigate("/form")}
           total={totalRecords}
+          onDownloadClick={handleDownload}
+          loading={downloadLoading}
         />
 
         {/* <ProspectDetailsTable data={items} selectedColumns={selectedColumns} /> */}
