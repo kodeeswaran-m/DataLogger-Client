@@ -3,6 +3,7 @@ import FilterDropdown from "../FilterDropdown/FilterDropdown";
 import "./SummaryToolbar.css";
 import ColumnPicker from "../ColumnPicker/ColumnPicker";
 import { Tooltip } from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface SummaryToolbarProps {
   showSearch: boolean;
@@ -43,6 +44,8 @@ export default function SummaryToolbar({
   onDownloadClick,
   loading
 }: SummaryToolbarProps) {
+
+
   return (
     <div className="summary-toolbar">
       {/* Search */}
@@ -93,7 +96,8 @@ export default function SummaryToolbar({
             style={{ opacity: loading ? 0.6 : 1 }}
           >
             {loading ? (
-              <div className="spinner" /> // small loader icon
+              // <div className="spinner" /> 
+              <CircularProgress size={18}/>
             ) : (
               <ArrowDownToLine size={18} />
             )}

@@ -38,33 +38,50 @@ export const deleteProspect = async (id: string) => {
   return res.data;
 };
 
-export const downloadProspectsExcelBlob = async (filters: any = {}) => {
-  const query = new URLSearchParams({
-    geo: filters.geo || "",
-    month: filters.month || "",
-    quarter: filters.quarter || "",
-    rag: filters.rag || "",
-  }).toString();
+export const downloadProspectsExcelBlob = async (filters: any) => {
+  try {
+    const query = new URLSearchParams({
+      geo: filters.geo || "",
+      month: filters.month || "",
+      quarter: filters.quarter || "",
+      rag: filters.rag || "",
+    }).toString();
 
-  const res = await axios.get(`${API_URL}/download?${query}`, {
-    responseType: "blob",
-  });
+    const response = await axios.get(`${API_URL}/download?${query}`, {
+      responseType: "blob",
+    });
 
-  const blob = new Blob([res.data], {
-    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  });
+    // File download handler
+    const blob = new Blob([response.data], {
+      type:
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
 
-  const link = document.createElement("a");
-  link.href = window.URL.createObjectURL(blob);
-  link.download = "prospect_data.xlsx";
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
+    link.href = url;
+    link.setAttribute("download", "prospect_data.xlsx");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    return { success: true, message: "Excel downloaded successfully" };
+  } catch (error: any) {
+    // offline case
+    if (!navigator.onLine) {
+      return { success: false, message: "No internet connection" };
+    }
+
+    // API returned 404 (no records)
+    if (error?.response?.status === 404) {
+      return { success: false, message: "No records found to download" };
+    }
+
+    return { success: false, message: "Failed to download Excel" };
+  }
 };
 
 
- 
-// POST with multipart/form-data
 export const createProspectDetail = async (data: ProspectPayload) => {
   console.log("form data from service", data);
   const res = await axios.post(API_URL, data, {

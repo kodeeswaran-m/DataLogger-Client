@@ -209,16 +209,25 @@ const ProspectDetailsSummary = () => {
   };
 
   const handleDownload = async () => {
-    setLoading(true);
+    setDownloadLoading(true);
     try {
-      await downloadProspectsExcelBlob({
+      if (!navigator.onLine) {
+        showMessage("No internet connection.");
+        return;
+      }
+       const response=await downloadProspectsExcelBlob({
         geo: filters.geo,
         month: filters.month,
         quarter: filters.quarter,
         rag: filters.rag,
       });
+      showMessage(response.message)
+    }
+    catch{
+          showMessage(!navigator.onLine ? "No internet connection." : "Download failed.");
+
     } finally {
-      setLoading(false);
+      setDownloadLoading(false);
     }
   };
 
